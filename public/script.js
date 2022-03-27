@@ -1,9 +1,37 @@
 const socket = io('/')
 const videoGrid = document.getElementById('video-grid')
+// const myPeer = new Peer(undefined, {
+//   path: '/peerjs',
+//   host: '/',
+//   port: '443'
+// })
 const myPeer = new Peer(undefined, {
-  path: '/peerjs',
-  host: '/',
-  port: '443'
+  host: 'peerjs-server.herokuapp.com',
+  secure: true,
+  port: 443,
+  config: {'iceServers': [
+    { url: 'stun:stun.l.google.com:19302' },
+    {
+      urls: "stun:openrelay.metered.ca:80"
+    },
+    {
+      urls: "turn:openrelay.metered.ca:80",
+      username: "openrelayproject",
+      credential: "openrelayproject"
+    },
+    {
+      urls: "turn:openrelay.metered.ca:443",
+      username: "openrelayproject",
+      credential: "openrelayproject"
+    },
+    {
+      urls: "turn:openrelay.metered.ca:443?transport=tcp",
+      username: "openrelayproject",
+      credential: "openrelayproject"
+    }
+    
+
+  ]} /* Sample servers, please use appropriate ones */
 })
 let myVideoStream;
 const myVideo = document.createElement('video')
