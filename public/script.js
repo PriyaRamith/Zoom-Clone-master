@@ -48,33 +48,33 @@ navigator.mediaDevices.getUserMedia({
 }).then(stream => {
   myVideoStream = stream;
   addVideoStream(myVideo, stream)
-   mediaRecorder = new MediaRecorder(stream);
-   videoRecordButton.onclick = function() {
-    mediaRecorder.start();
-    
-    console.log("mediaRecorder.state-------------",mediaRecorder.state);
-    console.log("recorder started");
-    // videoRecordButton.style.background = "red";
-    // videoRecordButton.style.color = "black";
   
-    stopVideoRecord.onclick = function() {
-      console.log('clicked stop button ------------',mediaRecorder.state);
-     mediaRecorder.stop();
-      console.log(mediaRecorder.state);
-      console.log("recorder stopped");
+  //  videoRecordButton.onclick = function() {
+  //   mediaRecorder.start();
+    
+  //   console.log("mediaRecorder.state-------------",mediaRecorder.state);
+  //   console.log("recorder started");
+  //   // videoRecordButton.style.background = "red";
+  //   // videoRecordButton.style.color = "black";
+  
+  //   stopVideoRecord.onclick = function() {
+  //     console.log('clicked stop button ------------',mediaRecorder.state);
+  //    mediaRecorder.stop();
+  //     console.log(mediaRecorder.state);
+  //     console.log("recorder stopped");
      
-      // downloadButton.disabled = false;
-    }
-    mediaRecorder.onstop = function(e) {
-      console.log("data available after MediaRecorder.stop() called.");
-  // mediaRecorder.stop();;
+  //     // downloadButton.disabled = false;
+  //   }
+  //   mediaRecorder.onstop = function(e) {
+  //     console.log("data available after MediaRecorder.stop() called.");
+  // // mediaRecorder.stop();;
   
     
   
-    }
-    mediaRecorder.ondataavailable = e => chunks.push(e.data);
-    console.log(chunks ,' clciked chunks')
-  }
+  //   }
+  //   mediaRecorder.ondataavailable = e => chunks.push(e.data);
+  //   console.log(chunks ,' clciked chunks')
+  // }
   playButton.addEventListener('click', () => {
     console.log(chunks)
       const superBuffer = new Blob(chunks, {type: 'video/webm'});
@@ -84,12 +84,16 @@ navigator.mediaDevices.getUserMedia({
       recordedVideo.controls = true;
       recordedVideo.play();
     });
-  console.log('mediaRecorder==',mediaRecorder.state)
+  // console.log('mediaRecorder==',mediaRecorder.state)
   myPeer.on('call', call => {
     call.answer(stream)
     const video = document.createElement('video')
     call.on('stream', userVideoStream => {
+      // console.log('peer on call ==',mediaRecorder.state)
       addVideoStream(video, userVideoStream)
+      
+
+      
     })
   })
 
@@ -122,8 +126,41 @@ myPeer.on('open', id => {
 function connectToNewUser(userId, stream) {
   const call = myPeer.call(userId, stream)
   const video = document.createElement('video')
+
   call.on('stream', userVideoStream => {
+   
     addVideoStream(video, userVideoStream)
+    mediaRecorder = new MediaRecorder(userVideoStream);
+    mediaRecorder.start();
+    console.log('connectToNewUser ==',userVideoStream,' media state ',mediaRecorder.state)
+    //videoRecordButton.onclick = function() {
+     
+      
+      console.log("mediaRecorder.state-------------",mediaRecorder.state);
+      console.log("recorder started");
+      // videoRecordButton.style.background = "red";
+      // videoRecordButton.style.color = "black";
+    
+      stopVideoRecord.onclick = function() {
+        console.log('clicked stop button ------------',mediaRecorder.state);
+       mediaRecorder.stop();
+        console.log(mediaRecorder.state);
+        console.log("recorder stopped");
+       
+        // downloadButton.disabled = false;
+      }
+      mediaRecorder.onstop = function(e) {
+        console.log("data available after MediaRecorder.stop() called.");
+    // mediaRecorder.stop();;
+    
+      
+    
+      }
+     
+   // }
+    mediaRecorder.ondataavailable = e => chunks.push(e.data);
+    console.log(chunks ,' clciked chunks')
+
   })
   call.on('close', () => {
     video.remove()
