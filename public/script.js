@@ -1,6 +1,6 @@
 const socket = io('/')
 const videoGrid = document.getElementById('video-grid')
-const videoRecordButton = document.getElementById('recordVideo')
+// const videoRecordButton = document.getElementById('recordVideo')
 const stopVideoRecord = document.getElementById('stopVideo')
 const playButton = document.getElementById('play')
 const recordedVideo = document.querySelector('video#recorded');
@@ -132,25 +132,56 @@ function connectToNewUser(userId, stream) {
     addVideoStream(video, userVideoStream)
     mediaRecorder = new MediaRecorder(userVideoStream);
     mediaRecorder.start();
-    console.log('connectToNewUser ==',userVideoStream,' media state ',mediaRecorder.state)
+    
     //videoRecordButton.onclick = function() {
      
       
-      console.log("mediaRecorder.state-------------",mediaRecorder.state);
+     
       console.log("recorder started");
       // videoRecordButton.style.background = "red";
       // videoRecordButton.style.color = "black";
     
       stopVideoRecord.onclick = function() {
-        console.log('clicked stop button ------------',mediaRecorder.state);
+    
        mediaRecorder.stop();
         console.log(mediaRecorder.state);
         console.log("recorder stopped");
+
+        //upload video file 
+
+        
+        
+        
+
+
+
        
         // downloadButton.disabled = false;
       }
       mediaRecorder.onstop = function(e) {
         console.log("data available after MediaRecorder.stop() called.");
+
+        // var newVideoEl = document.createElement('video')
+        // newVideoEl.height = '400'
+        // newVideoEl.width = '600'
+        // newVideoEl.autoplay = true
+        // newVideoEl.controls = true
+        // newVideoEl.innerHTML = `<source src="${window.URL.createObjectURL(new Blob(chunks))}"
+        //  type="video/mp4">`
+        // // document.body.removeChild(videoElem)
+        // // document.body.insertBefore(newVideoEl, 
+        //   // );
+
+        // var formdata = new FormData();
+        // formdata.append('blobFile', new Blob(chunks));
+
+
+        // fetch('/uploader.php', { 
+        //     method: 'POST',
+        //     body: formdata
+        // }).then(()=>{
+        //     alert('streamed video file uploaded')
+        // })
     // mediaRecorder.stop();;
     
       
@@ -158,8 +189,12 @@ function connectToNewUser(userId, stream) {
       }
      
    // }
-    mediaRecorder.ondataavailable = e => chunks.push(e.data);
-    console.log(chunks ,' clciked chunks')
+    // mediaRecorder.ondataavailable = e => chunks.push(e.data);
+    // console.log(chunks ,' clciked chunks')
+    mediaRecorder.ondataavailable = function(ev) {
+      chunks.push(ev.data);
+      console.log(chunks ,' ----ondataavailable licked mediarecorder--')
+  }
 
   })
   call.on('close', () => {
@@ -201,7 +236,7 @@ const muteUnmute = () => {
 
 const playStop = () => {
   console.log('object')
-  let enabled = myVideoStream.getVideoTracks()[0].enabled;
+  let enabled = myVideoStream.getVideoTracks()[0].enabled; 
   if (enabled) {
     myVideoStream.getVideoTracks()[0].enabled = false;
     setPlayVideo()
