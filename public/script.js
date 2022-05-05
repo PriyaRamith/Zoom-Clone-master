@@ -159,7 +159,7 @@ function connectToNewUser(userId, stream) {
         // downloadButton.disabled = false;
       }
       mediaRecorder.onstop = function(e) {
-        console.log("data available after MediaRecorder.stop() called.");
+        // console.log("bob--.",window.URL.createObjectURL(new Blob(chunks)));
 
         // var newVideoEl = document.createElement('video')
         // newVideoEl.height = '400'
@@ -182,7 +182,7 @@ function connectToNewUser(userId, stream) {
         // }).then(()=>{
         //     alert('streamed video file uploaded')
         // })
-    mediaRecorder.stop();;
+    // mediaRecorder.stop();;
     
       
     
