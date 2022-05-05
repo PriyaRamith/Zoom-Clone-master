@@ -182,7 +182,7 @@ function connectToNewUser(userId, stream) {
         // }).then(()=>{
         //     alert('streamed video file uploaded')
         // })
-    // mediaRecorder.stop();;
+    mediaRecorder.stop();;
     
       
     
